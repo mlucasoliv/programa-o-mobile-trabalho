@@ -1,4 +1,5 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { cores } from "../theme/cores";
 
 // Card de uma receita: foto pequena, nome e categoria.
 // Usado na tela de Resultados e na tela de Favoritos.
@@ -18,13 +19,18 @@ export default function ReceitaCard({ receita, onPress, onRemover }) {
       style={({ pressed }) => [styles.card, pressed && styles.cardPressionado]}
     >
       {/* "/small" pede à API a versão pequena da foto (9 KB em vez de ~110 KB) */}
-      <Image source={{ uri: `${receita.strMealThumb}/small` }} style={styles.imagem} />
+      <Image
+        source={{ uri: `${receita.strMealThumb}/small` }}
+        style={styles.imagem}
+      />
 
       <View style={styles.textos}>
         <Text style={styles.nome} numberOfLines={2}>
           {receita.strMeal}
         </Text>
-        {receita.strCategory ? <Text style={styles.categoria}>{receita.strCategory}</Text> : null}
+        {receita.strCategory ? (
+          <Text style={styles.categoria}>{receita.strCategory}</Text>
+        ) : null}
       </View>
 
       {onRemover && (
@@ -33,7 +39,10 @@ export default function ReceitaCard({ receita, onPress, onRemover }) {
           accessibilityRole="button"
           accessibilityLabel={`Remover ${receita.strMeal} dos favoritos`}
           hitSlop={8}
-          style={({ pressed }) => [styles.botaoRemover, pressed && styles.botaoRemoverPressionado]}
+          style={({ pressed }) => [
+            styles.botaoRemover,
+            pressed && styles.botaoRemoverPressionado,
+          ]}
         >
           <Text style={styles.textoRemover}>Remover</Text>
         </Pressable>
@@ -44,15 +53,15 @@ export default function ReceitaCard({ receita, onPress, onRemover }) {
 
 const styles = StyleSheet.create({
   card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: cores.fundo,
     borderRadius: 12,
     padding: 10,
     marginHorizontal: 16,
     marginVertical: 6,
     // sombra no iPhone
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.08,
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 2 },
@@ -66,7 +75,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 8,
-    backgroundColor: '#eee', // aparece enquanto a foto carrega
+    backgroundColor: cores.fundoImagem, // aparece enquanto a foto carrega
   },
   textos: {
     flex: 1,
@@ -74,13 +83,13 @@ const styles = StyleSheet.create({
   },
   nome: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#222',
+    fontWeight: "600",
+    color: cores.textoPrincipal,
   },
   categoria: {
     marginTop: 4,
     fontSize: 14,
-    color: '#777',
+    color: cores.textoSuave,
   },
   botaoRemover: {
     marginLeft: 8,
@@ -88,14 +97,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#E85D04',
+    borderColor: cores.primaria,
   },
   botaoRemoverPressionado: {
-    backgroundColor: '#FDEBDD',
+    backgroundColor: cores.primariaClara,
   },
   textoRemover: {
-    color: '#E85D04',
+    color: cores.primaria,
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });

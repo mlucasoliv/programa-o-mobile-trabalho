@@ -1,11 +1,12 @@
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { cores } from "../theme/cores";
 
 // Mostra a "rodinha" girando enquanto o app espera a API responder.
 // Uso: <Carregando mensagem="Buscando receitas..." />
-export default function Carregando({ mensagem = 'Carregando...' }) {
+export default function Carregando({ mensagem = "Carregando..." }) {
   return (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color="#E85D04" />
+      <ActivityIndicator size="large" color={cores.primaria} />
       <Text style={styles.texto}>{mensagem}</Text>
     </View>
   );
@@ -14,13 +15,13 @@ export default function Carregando({ mensagem = 'Carregando...' }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 24,
   },
   texto: {
     marginTop: 12,
     fontSize: 16,
-    color: '#555',
+    color: cores.textoSuave,
   },
 });

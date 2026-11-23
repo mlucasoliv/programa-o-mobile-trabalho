@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
-import Carregando from '../components/Carregando';
-import MensagemErro from '../components/MensagemErro';
-import ReceitaCard from '../components/ReceitaCard';
-import { buscarReceitas } from '../services/api';
+import { useEffect, useState } from "react";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import Carregando from "../components/Carregando";
+import MensagemErro from "../components/MensagemErro";
+import ReceitaCard from "../components/ReceitaCard";
+import { buscarReceitas } from "../services/api";
+import { cores } from "../theme/cores";
 
 // Tela de resultados: busca na API as receitas do termo digitado na tela inicial.
 export default function ResultadosScreen({ navigation, route }) {
@@ -26,7 +27,9 @@ export default function ResultadosScreen({ navigation, route }) {
       setReceitas(lista);
     } catch (e) {
       // 3. Deu errado (sem internet, API fora do ar): guarda a mensagem de erro
-      setErro('Não foi possível carregar as receitas. Confira sua internet e tente de novo.');
+      setErro(
+        "Não foi possível carregar as receitas. Confira sua internet e tente de novo.",
+      );
     } finally {
       // 4. Dando certo ou errado, o carregamento acaba
       setCarregando(false);
@@ -40,7 +43,7 @@ export default function ResultadosScreen({ navigation, route }) {
   }, [termo]);
 
   function abrirDetalhes(receita) {
-    navigation.navigate('Detalhes', { id: receita.idMeal });
+    navigation.navigate("Detalhes", { id: receita.idMeal });
   }
 
   // Renderização condicional: cada situação mostra uma coisa diferente
@@ -59,12 +62,19 @@ export default function ResultadosScreen({ navigation, route }) {
     return (
       <View style={styles.vazio}>
         <Text style={styles.vazioIcone}>🔍</Text>
-        <Text style={styles.vazioTitulo}>Nenhuma receita encontrada para "{termo}"</Text>
-        <Text style={styles.vazioDica}>Tente outro nome em inglês, como chicken, cake ou soup.</Text>
+        <Text style={styles.vazioTitulo}>
+          Nenhuma receita encontrada para "{termo}"
+        </Text>
+        <Text style={styles.vazioDica}>
+          Tente outro nome em inglês, como chicken, cake ou soup.
+        </Text>
         <Pressable
           onPress={() => navigation.goBack()}
           accessibilityRole="button"
-          style={({ pressed }) => [styles.botao, pressed && styles.botaoPressionado]}
+          style={({ pressed }) => [
+            styles.botao,
+            pressed && styles.botaoPressionado,
+          ]}
         >
           <Text style={styles.textoBotao}>Fazer outra busca</Text>
         </Pressable>
@@ -72,7 +82,10 @@ export default function ResultadosScreen({ navigation, route }) {
     );
   }
 
-  const quantidade = receitas.length === 1 ? '1 receita encontrada' : `${receitas.length} receitas encontradas`;
+  const quantidade =
+    receitas.length === 1
+      ? "1 receita encontrada"
+      : `${receitas.length} receitas encontradas`;
 
   // FlatList desenha só os itens que aparecem na tela: é a lista certa para dados da API
   return (
@@ -81,7 +94,9 @@ export default function ResultadosScreen({ navigation, route }) {
       contentContainerStyle={styles.lista}
       data={receitas}
       keyExtractor={(receita) => receita.idMeal} // chave única de cada item
-      renderItem={({ item }) => <ReceitaCard receita={item} onPress={() => abrirDetalhes(item)} />}
+      renderItem={({ item }) => (
+        <ReceitaCard receita={item} onPress={() => abrirDetalhes(item)} />
+      )}
       ListHeaderComponent={
         <Text style={styles.cabecalho}>
           {quantidade} para "{termo}"
@@ -94,7 +109,7 @@ export default function ResultadosScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
-    backgroundColor: '#F6F6F6', // fundo cinza claro para os cards brancos se destacarem
+    backgroundColor: cores.fundoSuave, // fundo cinza claro para os cards brancos se destacarem
   },
   lista: {
     paddingVertical: 8,
@@ -104,12 +119,12 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 4,
     fontSize: 14,
-    color: '#666',
+    color: cores.textoSuave,
   },
   vazio: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 24,
   },
   vazioIcone: {
@@ -118,29 +133,29 @@ const styles = StyleSheet.create({
   vazioTitulo: {
     marginTop: 12,
     fontSize: 17,
-    fontWeight: '600',
-    color: '#222',
-    textAlign: 'center',
+    fontWeight: "600",
+    color: cores.textoPrincipal,
+    textAlign: "center",
   },
   vazioDica: {
     marginTop: 6,
     fontSize: 15,
-    color: '#666',
-    textAlign: 'center',
+    color: cores.textoSuave,
+    textAlign: "center",
   },
   botao: {
     marginTop: 20,
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 10,
-    backgroundColor: '#E85D04',
+    backgroundColor: cores.primaria,
   },
   botaoPressionado: {
     opacity: 0.7,
   },
   textoBotao: {
-    color: '#fff',
+    color: cores.textoSobrePrimaria,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
