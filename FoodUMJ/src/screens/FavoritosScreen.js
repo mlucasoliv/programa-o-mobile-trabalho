@@ -1,6 +1,7 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import ReceitaCard from "../components/ReceitaCard";
 import { useFavoritos } from "../context/FavoritosContext";
+import { cores } from "../theme/cores";
 
 // Tela de favoritos: mostra a lista global de receitas favoritadas (FavoritosContext).
 // Tocar no card abre os Detalhes; o botão "Remover" tira a receita da lista.
@@ -42,7 +43,7 @@ export default function FavoritosScreen({ navigation }) {
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: cores.fundoSuave, // igual à tela de Resultados: os cards brancos se destacam
   },
   lista: {
     paddingVertical: 8,
@@ -52,23 +53,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 24,
-    backgroundColor: "#fff",
+    backgroundColor: cores.fundoSuave,
   },
   icone: {
     fontSize: 48,
-    color: "#E85D04",
+    color: cores.primaria,
     marginBottom: 12,
   },
   textoVazio: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#222",
+    color: cores.textoPrincipal,
     textAlign: "center",
   },
   dicaVazio: {
     marginTop: 8,
     fontSize: 15,
-    color: "#666",
+    color: cores.textoSuave,
     textAlign: "center",
   },
 });

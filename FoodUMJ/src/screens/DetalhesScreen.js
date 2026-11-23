@@ -11,6 +11,7 @@ import Carregando from "../components/Carregando";
 import MensagemErro from "../components/MensagemErro";
 import { useFavoritos } from "../context/FavoritosContext";
 import { buscarReceitaPorId } from "../services/api";
+import { cores } from "../theme/cores";
 import { montarIngredientes } from "../utils/ingredientes";
 
 // O modo de preparo vem num texto só, com quebras de linha ("\r\n") entre os parágrafos.
@@ -37,6 +38,8 @@ export default function DetalhesScreen({ route }) {
   const [receita, setReceita] = useState(null);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
+
+  // Funções da lista global de favoritos (FavoritosContext)
   const { ehFavorito, adicionarFavorito, removerFavorito } = useFavoritos();
 
   async function carregar() {
@@ -75,8 +78,11 @@ export default function DetalhesScreen({ route }) {
 
   const ingredientes = montarIngredientes(receita);
   const passos = montarPassos(receita.strInstructions);
+
+  // Já está na lista de favoritos? Define o texto do botão
   const favorita = ehFavorito(receita.idMeal);
 
+  // Se já é favorita, remove; se não é, adiciona (o contexto guarda só os 4 campos do card)
   function alternarFavorito() {
     if (favorita) {
       removerFavorito(receita.idMeal);
@@ -107,29 +113,28 @@ export default function DetalhesScreen({ route }) {
           ) : null}
         </View>
 
-        {
-          <Pressable
-            onPress={alternarFavorito}
-            accessibilityRole="button"
-            accessibilityLabel={
-              favorita ? "Remover dos favoritos" : "Favoritar receita"
-            }
-            style={({ pressed }) => [
-              styles.botaoFavorito,
-              favorita && styles.botaoFavoritoAtivo,
-              pressed && styles.botaoFavoritoPressionado,
+        {/* Botão que alterna entre favoritar e remover dos favoritos */}
+        <Pressable
+          onPress={alternarFavorito}
+          accessibilityRole="button"
+          accessibilityLabel={
+            favorita ? "Remover dos favoritos" : "Favoritar receita"
+          }
+          style={({ pressed }) => [
+            styles.botaoFavorito,
+            favorita && styles.botaoFavoritoAtivo,
+            pressed && styles.botaoFavoritoPressionado,
+          ]}
+        >
+          <Text
+            style={[
+              styles.textoFavorito,
+              favorita && styles.textoFavoritoAtivo,
             ]}
           >
-            <Text
-              style={[
-                styles.textoFavorito,
-                favorita && styles.textoFavoritoAtivo,
-              ]}
-            >
-              {favorita ? "Remover dos favoritos" : "❤ Favoritar"}
-            </Text>
-          </Pressable>
-        }
+            {favorita ? "Remover dos favoritos" : "❤ Favoritar"}
+          </Text>
+        </Pressable>
 
         <Text style={styles.tituloSecao}>
           Ingredientes ({ingredientes.length})
@@ -165,7 +170,7 @@ export default function DetalhesScreen({ route }) {
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: cores.fundo,
   },
   conteudo: {
     paddingBottom: 32,
@@ -173,7 +178,7 @@ const styles = StyleSheet.create({
   foto: {
     width: "100%",
     aspectRatio: 4 / 3, // altura proporcional à largura da tela
-    backgroundColor: "#eee", // aparece enquanto a foto carrega
+    backgroundColor: cores.fundoImagem, // aparece enquanto a foto carrega
   },
   corpo: {
     padding: 20,
@@ -181,7 +186,7 @@ const styles = StyleSheet.create({
   nome: {
     fontSize: 24,
     fontWeight: "700",
-    color: "#222",
+    color: cores.textoPrincipal,
   },
   etiquetas: {
     flexDirection: "row",
@@ -194,8 +199,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 14,
     overflow: "hidden", // necessário para o borderRadius do Text funcionar no iPhone
-    backgroundColor: "#FDEBDD",
-    color: "#9A3B00",
+    backgroundColor: cores.primariaClara,
+    color: cores.primariaEscura,
     fontSize: 14,
     fontWeight: "600",
   },
@@ -204,35 +209,34 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 10,
     alignItems: "center",
-    backgroundColor: "#E85D04",
+    backgroundColor: cores.primaria,
     borderWidth: 1,
-    borderColor: "#E85D04",
+    borderColor: cores.primaria,
   },
   botaoFavoritoAtivo: {
-    backgroundColor: "#fff",
+    backgroundColor: cores.fundo,
   },
   botaoFavoritoPressionado: {
     opacity: 0.7,
   },
   textoFavorito: {
-    color: "#fff",
+    color: cores.textoSobrePrimaria,
     fontSize: 16,
     fontWeight: "700",
   },
   textoFavoritoAtivo: {
-    color: "#E85D04",
+    color: cores.primaria,
   },
-
   tituloSecao: {
     marginTop: 28,
     marginBottom: 10,
     fontSize: 19,
     fontWeight: "700",
-    color: "#222",
+    color: cores.textoPrincipal,
   },
   caixa: {
     borderRadius: 12,
-    backgroundColor: "#F6F6F6",
+    backgroundColor: cores.fundoSuave,
     paddingHorizontal: 14,
   },
   linhaIngrediente: {
@@ -243,18 +247,18 @@ const styles = StyleSheet.create({
   },
   linhaComDivisoria: {
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: "#ddd",
+    borderTopColor: cores.borda,
   },
   ingrediente: {
     flex: 1,
     fontSize: 15,
-    color: "#222",
+    color: cores.textoPrincipal,
     textTransform: "capitalize", // a API às vezes manda "fenugreek" em minúscula
   },
   medida: {
     flexShrink: 1,
     fontSize: 15,
-    color: "#666",
+    color: cores.textoSuave,
     textAlign: "right",
   },
   passo: {
@@ -267,8 +271,8 @@ const styles = StyleSheet.create({
     height: 26,
     borderRadius: 13,
     overflow: "hidden",
-    backgroundColor: "#E85D04",
-    color: "#fff",
+    backgroundColor: cores.primaria,
+    color: cores.textoSobrePrimaria,
     fontSize: 14,
     fontWeight: "700",
     textAlign: "center",
@@ -278,6 +282,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
     lineHeight: 23,
-    color: "#333",
+    color: cores.texto,
   },
 });
