@@ -180,9 +180,9 @@ npx expo start
 **B1. Navegação** (depois que a A1 estiver na `main`)
 ```bash
 cd FoodUMJ
-npm install @react-navigation/native @react-navigation/native-stack
-npx expo install react-native-screens react-native-safe-area-context
+npx expo install @react-navigation/native @react-navigation/native-stack react-native-screens react-native-safe-area-context
 ```
+- Sempre instalar pacotes com `npx expo install` (e não `npm install`): ele escolhe a versão compatível com o Expo do projeto
 - Criar as 4 telas só com um `<Text>` e botões de navegação, usando os nomes de rota da seção 5
 - Configurar o Stack no `App.js` e o botão ❤ Favoritos no cabeçalho
 - Conceitos: `NavigationContainer`, `Stack.Navigator`, `navigation.navigate('Tela', { params })`, `route.params`
