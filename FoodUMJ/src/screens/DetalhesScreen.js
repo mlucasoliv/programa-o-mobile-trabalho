@@ -1,9 +1,17 @@
-import { useEffect, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
-import Carregando from '../components/Carregando';
-import MensagemErro from '../components/MensagemErro';
-import { buscarReceitaPorId } from '../services/api';
-import { montarIngredientes } from '../utils/ingredientes';
+import { useEffect, useState } from "react";
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import Carregando from "../components/Carregando";
+import MensagemErro from "../components/MensagemErro";
+import { useFavoritos } from "../context/FavoritosContext";
+import { buscarReceitaPorId } from "../services/api";
+import { montarIngredientes } from "../utils/ingredientes";
 
 // O modo de preparo vem num texto só, com quebras de linha ("\r\n") entre os parágrafos.
 // Algumas receitas também têm linhas soltas só com "STEP 1", "STEP 2"...
@@ -16,7 +24,7 @@ function montarPassos(instrucoes) {
   return instrucoes
     .split(/\r?\n/) // quebra o texto em linhas
     .map((linha) => linha.trim())
-    .filter((linha) => linha !== '' && !/^step\s*\d+$/i.test(linha)); // tira vazias e "STEP N"
+    .filter((linha) => linha !== "" && !/^step\s*\d+$/i.test(linha)); // tira vazias e "STEP N"
 }
 
 // Tela de detalhes: busca a receita completa pelo id e mostra foto, nome,
@@ -29,6 +37,7 @@ export default function DetalhesScreen({ route }) {
   const [receita, setReceita] = useState(null);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
+  const { ehFavorito, adicionarFavorito, removerFavorito } = useFavoritos();
 
   async function carregar() {
     setCarregando(true);
@@ -38,7 +47,9 @@ export default function DetalhesScreen({ route }) {
       const dados = await buscarReceitaPorId(id); // receita completa, ou null se o id não existir
       setReceita(dados);
     } catch (e) {
-      setErro('Não foi possível carregar a receita. Confira sua internet e tente de novo.');
+      setErro(
+        "Não foi possível carregar a receita. Confira sua internet e tente de novo.",
+      );
     } finally {
       setCarregando(false);
     }
@@ -64,6 +75,15 @@ export default function DetalhesScreen({ route }) {
 
   const ingredientes = montarIngredientes(receita);
   const passos = montarPassos(receita.strInstructions);
+  const favorita = ehFavorito(receita.idMeal);
+
+  function alternarFavorito() {
+    if (favorita) {
+      removerFavorito(receita.idMeal);
+    } else {
+      adicionarFavorito(receita);
+    }
+  }
 
   return (
     <ScrollView style={styles.tela} contentContainerStyle={styles.conteudo}>
@@ -79,19 +99,50 @@ export default function DetalhesScreen({ route }) {
 
         {/* Categoria e origem só aparecem se a API mandar */}
         <View style={styles.etiquetas}>
-          {receita.strCategory ? <Text style={styles.etiqueta}>🍽 {receita.strCategory}</Text> : null}
-          {receita.strArea ? <Text style={styles.etiqueta}>🌍 {receita.strArea}</Text> : null}
+          {receita.strCategory ? (
+            <Text style={styles.etiqueta}>🍽 {receita.strCategory}</Text>
+          ) : null}
+          {receita.strArea ? (
+            <Text style={styles.etiqueta}>🌍 {receita.strArea}</Text>
+          ) : null}
         </View>
 
-        {/* Fase 3 (Pessoa B): o botão ❤ Favoritar entra aqui, usando o useFavoritos() */}
+        {
+          <Pressable
+            onPress={alternarFavorito}
+            accessibilityRole="button"
+            accessibilityLabel={
+              favorita ? "Remover dos favoritos" : "Favoritar receita"
+            }
+            style={({ pressed }) => [
+              styles.botaoFavorito,
+              favorita && styles.botaoFavoritoAtivo,
+              pressed && styles.botaoFavoritoPressionado,
+            ]}
+          >
+            <Text
+              style={[
+                styles.textoFavorito,
+                favorita && styles.textoFavoritoAtivo,
+              ]}
+            >
+              {favorita ? "Remover dos favoritos" : "❤ Favoritar"}
+            </Text>
+          </Pressable>
+        }
 
-        <Text style={styles.tituloSecao}>Ingredientes ({ingredientes.length})</Text>
+        <Text style={styles.tituloSecao}>
+          Ingredientes ({ingredientes.length})
+        </Text>
         <View style={styles.caixa}>
           {ingredientes.map((item, indice) => (
             // Uma receita pode repetir o mesmo ingrediente, então a chave usa a posição
             <View
               key={`${indice}-${item.ingrediente}`}
-              style={[styles.linhaIngrediente, indice > 0 && styles.linhaComDivisoria]}
+              style={[
+                styles.linhaIngrediente,
+                indice > 0 && styles.linhaComDivisoria,
+              ]}
             >
               <Text style={styles.ingrediente}>{item.ingrediente}</Text>
               <Text style={styles.medida}>{item.medida}</Text>
@@ -114,27 +165,27 @@ export default function DetalhesScreen({ route }) {
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   conteudo: {
     paddingBottom: 32,
   },
   foto: {
-    width: '100%',
+    width: "100%",
     aspectRatio: 4 / 3, // altura proporcional à largura da tela
-    backgroundColor: '#eee', // aparece enquanto a foto carrega
+    backgroundColor: "#eee", // aparece enquanto a foto carrega
   },
   corpo: {
     padding: 20,
   },
   nome: {
     fontSize: 24,
-    fontWeight: '700',
-    color: '#222',
+    fontWeight: "700",
+    color: "#222",
   },
   etiquetas: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     gap: 8,
     marginTop: 10,
   },
@@ -142,48 +193,72 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 12,
     borderRadius: 14,
-    overflow: 'hidden', // necessário para o borderRadius do Text funcionar no iPhone
-    backgroundColor: '#FDEBDD',
-    color: '#9A3B00',
+    overflow: "hidden", // necessário para o borderRadius do Text funcionar no iPhone
+    backgroundColor: "#FDEBDD",
+    color: "#9A3B00",
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
   },
+  botaoFavorito: {
+    marginTop: 18,
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: "center",
+    backgroundColor: "#E85D04",
+    borderWidth: 1,
+    borderColor: "#E85D04",
+  },
+  botaoFavoritoAtivo: {
+    backgroundColor: "#fff",
+  },
+  botaoFavoritoPressionado: {
+    opacity: 0.7,
+  },
+  textoFavorito: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  textoFavoritoAtivo: {
+    color: "#E85D04",
+  },
+
   tituloSecao: {
     marginTop: 28,
     marginBottom: 10,
     fontSize: 19,
-    fontWeight: '700',
-    color: '#222',
+    fontWeight: "700",
+    color: "#222",
   },
   caixa: {
     borderRadius: 12,
-    backgroundColor: '#F6F6F6',
+    backgroundColor: "#F6F6F6",
     paddingHorizontal: 14,
   },
   linhaIngrediente: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     gap: 12,
     paddingVertical: 10,
   },
   linhaComDivisoria: {
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: '#ddd',
+    borderTopColor: "#ddd",
   },
   ingrediente: {
     flex: 1,
     fontSize: 15,
-    color: '#222',
-    textTransform: 'capitalize', // a API às vezes manda "fenugreek" em minúscula
+    color: "#222",
+    textTransform: "capitalize", // a API às vezes manda "fenugreek" em minúscula
   },
   medida: {
     flexShrink: 1,
     fontSize: 15,
-    color: '#666',
-    textAlign: 'right',
+    color: "#666",
+    textAlign: "right",
   },
   passo: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 12,
     marginBottom: 14,
   },
@@ -191,18 +266,18 @@ const styles = StyleSheet.create({
     width: 26,
     height: 26,
     borderRadius: 13,
-    overflow: 'hidden',
-    backgroundColor: '#E85D04',
-    color: '#fff',
+    overflow: "hidden",
+    backgroundColor: "#E85D04",
+    color: "#fff",
     fontSize: 14,
-    fontWeight: '700',
-    textAlign: 'center',
+    fontWeight: "700",
+    textAlign: "center",
     lineHeight: 26,
   },
   textoPasso: {
     flex: 1,
     fontSize: 15,
     lineHeight: 23,
-    color: '#333',
+    color: "#333",
   },
 });
