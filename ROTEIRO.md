@@ -83,7 +83,7 @@ programa-o-mobile-trabalho/
         ├── context/
         │   └── FavoritosContext.js     [A] ✅  lista global de favoritos (useContext)
         └── utils/
-            └── ingredientes.js         [A]     junta strIngredientN + strMeasureN
+            └── ingredientes.js         [A] ✅  junta strIngredientN + strMeasureN
 ```
 
 Como as fases são em sequência, não há risco de conflito: na Fase 3 a Pessoa B pode mexer em qualquer arquivo (por exemplo, para colocar o botão ❤ nos Detalhes e aplicar as cores em todas as telas).
@@ -204,7 +204,7 @@ npx expo install @react-navigation/native @react-navigation/native-stack react-n
 - Criar o hook `useFavoritos()` para as telas usarem o contexto com uma linha
 - ✅ **Pronto quando:** o app continua abrindo e qualquer tela consegue ler `favoritos` (começa `[]`)
 
-**A9. Ingredientes**
+✅ **A9. Ingredientes** (PR #8)
 - `montarIngredientes(receita)` percorre de 1 a 20 e devolve `[{ ingrediente, medida }]`, ignorando os vazios
 - ✅ **Pronto quando:** com uma receita da API, a função devolve a lista limpa
 
