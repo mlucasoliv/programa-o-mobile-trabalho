@@ -67,7 +67,7 @@ programa-o-mobile-trabalho/
 ├── ROTEIRO.md                          este arquivo
 ├── README.md                           [B]     Fase 4
 └── FoodUMJ/                            o app Expo
-    ├── App.js                          [A]     navegação + Provider dos favoritos
+    ├── App.js                          [A] ✅  navegação + Provider dos favoritos
     └── src/
         ├── services/
         │   └── api.js                  [A] ✅  buscarReceitas, buscarReceitaPorId
@@ -81,7 +81,7 @@ programa-o-mobile-trabalho/
         │   ├── DetalhesScreen.js       [A]     o botão ❤ entra na Fase 3 (B)
         │   └── FavoritosScreen.js      [B]
         ├── context/
-        │   └── FavoritosContext.js     [A]     lista global de favoritos (useContext)
+        │   └── FavoritosContext.js     [A] ✅  lista global de favoritos (useContext)
         └── utils/
             └── ingredientes.js         [A]     junta strIngredientN + strMeasureN
 ```
@@ -198,7 +198,7 @@ npx expo install @react-navigation/native @react-navigation/native-stack react-n
   - "xyzabc" mostra "Nenhuma receita encontrada"
   - em **modo avião** aparece o erro, e "Tentar novamente" funciona quando a internet volta
 
-**A8. Contexto de favoritos**
+✅ **A8. Contexto de favoritos** (PR #7)
 - `createContext` + `FavoritosProvider` com `useState([])` e as funções da seção 5
 - Envolver o `NavigationContainer` com o Provider no `App.js`
 - Criar o hook `useFavoritos()` para as telas usarem o contexto com uma linha
@@ -258,7 +258,7 @@ npx expo install @react-navigation/native @react-navigation/native-stack react-n
 | React Native com Expo | Projeto criado com `create-expo-app` | A ✅ |
 | Consome API externa | `src/services/api.js` (TheMealDB) | A ✅ |
 | `useState` para os estados | Todas as telas (`termo`, `receitas`, `carregando`, `erro`, `receita`) | A e B |
-| `useContext` para favoritos | `src/context/FavoritosContext.js` (A), usado no botão ❤ e na tela de Favoritos (B) | A e B |
+| `useContext` para favoritos | `src/context/FavoritosContext.js` (A), usado no botão ❤ e na tela de Favoritos (B) | A ✅ e B |
 | Tela inicial com pesquisa | `HomeScreen.js` | A ✅ |
 | Tela de resultados | `ResultadosScreen.js` | A ✅ |
 | Tela de detalhes | `DetalhesScreen.js` | A |
