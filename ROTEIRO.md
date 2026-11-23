@@ -5,7 +5,7 @@ App em React Native + Expo para **pesquisar receitas**, ver **detalhes** (nome, 
 | | Nome | GitHub | Frente |
 |---|---|---|---|
 | **Pessoa A** | ______________ | @mlucasoliv | 🔎 **Busca**: API, tela inicial, resultados |
-| **Pessoa B** | ______________ | @______________ | ❤️ **Receita e Favoritos**: navegação, contexto, detalhes, favoritos |
+| **Pessoa B** | ______________ | @lPedroTl | ❤️ **Receita e Favoritos**: navegação, contexto, detalhes, favoritos |
 
 ---
 
