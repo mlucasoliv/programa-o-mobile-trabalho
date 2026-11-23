@@ -77,7 +77,7 @@ programa-o-mobile-trabalho/
         │   └── ReceitaCard.js          [A] ✅  card com foto + nome + categoria
         ├── screens/
         │   ├── HomeScreen.js           [A] ✅  campo de pesquisa + sugestões
-        │   ├── ResultadosScreen.js     [A]
+        │   ├── ResultadosScreen.js     [A] ✅  busca na API + FlatList de cards
         │   ├── DetalhesScreen.js       [A]     o botão ❤ entra na Fase 3 (B)
         │   └── FavoritosScreen.js      [B]
         ├── context/
@@ -190,7 +190,7 @@ npx expo install @react-navigation/native @react-navigation/native-stack react-n
 - Título FoodUMJ e sugestões de termos em inglês (`chicken`, `beef`, `cake`: `pasta` só traz 1 resultado)
 - ✅ **Pronto quando:** digitar "beef" e buscar abre Resultados recebendo "beef"
 
-**A7. Tela de resultados**
+✅ **A7. Tela de resultados** (PR #6)
 - `useEffect` chama `buscarReceitas(termo)` quando a tela abre
 - Estados `receitas`, `carregando`, `erro`; `FlatList` com `ReceitaCard`; toque abre Detalhes com o `id`
 - ✅ **Pronto quando:**
@@ -260,7 +260,7 @@ npx expo install @react-navigation/native @react-navigation/native-stack react-n
 | `useState` para os estados | Todas as telas (`termo`, `receitas`, `carregando`, `erro`, `receita`) | A e B |
 | `useContext` para favoritos | `src/context/FavoritosContext.js` (A), usado no botão ❤ e na tela de Favoritos (B) | A e B |
 | Tela inicial com pesquisa | `HomeScreen.js` | A ✅ |
-| Tela de resultados | `ResultadosScreen.js` | A |
+| Tela de resultados | `ResultadosScreen.js` | A ✅ |
 | Tela de detalhes | `DetalhesScreen.js` | A |
 | Tela de favoritos | `FavoritosScreen.js` | B |
 | Navegação entre telas | `App.js` (React Navigation) | A ✅ |
