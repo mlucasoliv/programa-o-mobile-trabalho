@@ -78,7 +78,7 @@ programa-o-mobile-trabalho/
         ├── screens/
         │   ├── HomeScreen.js           [A] ✅  campo de pesquisa + sugestões
         │   ├── ResultadosScreen.js     [A] ✅  busca na API + FlatList de cards
-        │   ├── DetalhesScreen.js       [A]     o botão ❤ entra na Fase 3 (B)
+        │   ├── DetalhesScreen.js       [A] ✅  o botão ❤ entra na Fase 3 (B)
         │   └── FavoritosScreen.js      [B]
         ├── context/
         │   └── FavoritosContext.js     [A] ✅  lista global de favoritos (useContext)
@@ -208,7 +208,7 @@ npx expo install @react-navigation/native @react-navigation/native-stack react-n
 - `montarIngredientes(receita)` percorre de 1 a 20 e devolve `[{ ingrediente, medida }]`, ignorando os vazios
 - ✅ **Pronto quando:** com uma receita da API, a função devolve a lista limpa
 
-**A10. Tela de detalhes**
+✅ **A10. Tela de detalhes** (PR #9)
 - Recebe o `id`, chama `buscarReceitaPorId(id)` com o padrão de carregamento/erro da seção 5
 - `ScrollView` com foto grande, nome, categoria/origem, ingredientes e modo de preparo
 - ✅ **Pronto quando:** tocar em qualquer receita dos Resultados mostra todos os dados dela
@@ -257,11 +257,11 @@ npx expo install @react-navigation/native @react-navigation/native-stack react-n
 |---|---|---|
 | React Native com Expo | Projeto criado com `create-expo-app` | A ✅ |
 | Consome API externa | `src/services/api.js` (TheMealDB) | A ✅ |
-| `useState` para os estados | Todas as telas (`termo`, `receitas`, `carregando`, `erro`, `receita`) | A e B |
+| `useState` para os estados | Todas as telas (`termo`, `receitas`, `carregando`, `erro`, `receita`) | A ✅ e B |
 | `useContext` para favoritos | `src/context/FavoritosContext.js` (A), usado no botão ❤ e na tela de Favoritos (B) | A ✅ e B |
 | Tela inicial com pesquisa | `HomeScreen.js` | A ✅ |
 | Tela de resultados | `ResultadosScreen.js` | A ✅ |
-| Tela de detalhes | `DetalhesScreen.js` | A |
+| Tela de detalhes | `DetalhesScreen.js` | A ✅ |
 | Tela de favoritos | `FavoritosScreen.js` | B |
 | Navegação entre telas | `App.js` (React Navigation) | A ✅ |
 | Carregamento e erros | `Carregando.js` e `MensagemErro.js`, usados em Resultados e Detalhes | A ✅ |
