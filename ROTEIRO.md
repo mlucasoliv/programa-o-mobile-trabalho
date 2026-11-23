@@ -76,7 +76,7 @@ programa-o-mobile-trabalho/
         │   ├── MensagemErro.js         [A] ✅  mensagem + botão "Tentar novamente"
         │   └── ReceitaCard.js          [A] ✅  card com foto + nome + categoria
         ├── screens/
-        │   ├── HomeScreen.js           [A]
+        │   ├── HomeScreen.js           [A] ✅  campo de pesquisa + sugestões
         │   ├── ResultadosScreen.js     [A]
         │   ├── DetalhesScreen.js       [A]     o botão ❤ entra na Fase 3 (B)
         │   └── FavoritosScreen.js      [B]
@@ -184,7 +184,7 @@ npx expo install @react-navigation/native @react-navigation/native-stack react-n
 
 ### 🟩 Fase 2 — Telas principais e contexto (Pessoa A)
 
-**A6. Tela inicial**
+✅ **A6. Tela inicial** (PR #5)
 - `TextInput` controlado por `useState`, botão **Buscar**, Enter do teclado também busca
 - Não deixa buscar com o campo vazio (`termo.trim()`)
 - Título FoodUMJ e sugestões de termos em inglês (`chicken`, `beef`, `cake`: `pasta` só traz 1 resultado)
@@ -259,11 +259,11 @@ npx expo install @react-navigation/native @react-navigation/native-stack react-n
 | Consome API externa | `src/services/api.js` (TheMealDB) | A ✅ |
 | `useState` para os estados | Todas as telas (`termo`, `receitas`, `carregando`, `erro`, `receita`) | A e B |
 | `useContext` para favoritos | `src/context/FavoritosContext.js` (A), usado no botão ❤ e na tela de Favoritos (B) | A e B |
-| Tela inicial com pesquisa | `HomeScreen.js` | A |
+| Tela inicial com pesquisa | `HomeScreen.js` | A ✅ |
 | Tela de resultados | `ResultadosScreen.js` | A |
 | Tela de detalhes | `DetalhesScreen.js` | A |
 | Tela de favoritos | `FavoritosScreen.js` | B |
-| Navegação entre telas | `App.js` (React Navigation) | A |
+| Navegação entre telas | `App.js` (React Navigation) | A ✅ |
 | Carregamento e erros | `Carregando.js` e `MensagemErro.js`, usados em Resultados e Detalhes | A ✅ |
 
 ---
