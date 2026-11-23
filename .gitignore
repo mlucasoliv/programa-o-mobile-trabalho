@@ -1,8 +1,9 @@
 .DS_Store
 node_modules/
 
-# Arquivos do Claude (não vão para o repositório)
+# Arquivos de assistentes de IA (não vão para o repositório)
 CLAUDE.md
 CLAUDE.local.md
 .claude/
 .mcp.json
+AGENTS.md
