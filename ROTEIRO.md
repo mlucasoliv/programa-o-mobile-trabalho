@@ -167,7 +167,7 @@ Aí abre um **Pull Request** no GitHub e faz o merge. De preferência, o outro d
 - ✅ **A2. Serviço da API** (PR #2)
 - ✅ **A3. Componentes Carregando e MensagemErro** (PR #2)
 - ✅ **A4. ReceitaCard** (PR #3)
-- ☐ **A5. Navegação + 4 telas esqueleto** (branch `navegacao`)
+- ✅ **A5. Navegação + 4 telas esqueleto** (PR #4)
 
 **A5. Navegação**
 ```bash
