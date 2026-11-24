@@ -73,7 +73,9 @@ export default function DetalhesScreen({ route }) {
 
   // A API respondeu, mas não existe receita com esse id: tentar de novo não adianta
   if (!receita) {
-    return <MensagemErro mensagem="Receita não encontrada." />;
+    return (
+      <MensagemErro mensagem="Receita não encontrada. Volte e escolha outra receita." />
+    );
   }
 
   const ingredientes = montarIngredientes(receita);
