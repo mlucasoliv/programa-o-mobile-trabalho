@@ -23,5 +23,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
     fontSize: 16,
     color: cores.textoSuave,
+    textAlign: "center", // termos longos quebram em duas linhas centralizadas
   },
 });

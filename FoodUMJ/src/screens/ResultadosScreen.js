@@ -63,7 +63,7 @@ export default function ResultadosScreen({ navigation, route }) {
       <View style={styles.vazio}>
         <Text style={styles.vazioIcone}>🔍</Text>
         <Text style={styles.vazioTitulo}>
-          Nenhuma receita encontrada para "{termo}"
+          Nenhuma receita encontrada para "{termo}".
         </Text>
         <Text style={styles.vazioDica}>
           Tente outro nome em inglês, como chicken, cake ou soup.

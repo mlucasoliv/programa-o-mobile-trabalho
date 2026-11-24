@@ -65,7 +65,8 @@ O botão **❤ Favoritos** fica no cabeçalho de todas as telas.
 ```
 programa-o-mobile-trabalho/
 ├── ROTEIRO.md                          este arquivo
-├── README.md                           [B]     Fase 4
+├── README.md                           [B] ✅  sobre o app, como rodar e prints
+├── prints/                             [B] ✅  prints das telas usados no README
 └── FoodUMJ/                            o app Expo
     ├── App.js                          [A] ✅  navegação + Provider dos favoritos
     └── src/
@@ -78,10 +79,12 @@ programa-o-mobile-trabalho/
         ├── screens/
         │   ├── HomeScreen.js           [A] ✅  campo de pesquisa + sugestões
         │   ├── ResultadosScreen.js     [A] ✅  busca na API + FlatList de cards
-        │   ├── DetalhesScreen.js       [A] ✅  o botão ❤ entra na Fase 3 (B)
-        │   └── FavoritosScreen.js      [B]
+        │   ├── DetalhesScreen.js       [A] ✅  receita completa (botão ❤: B ✅)
+        │   └── FavoritosScreen.js      [B] ✅  lista de favoritas + Remover
         ├── context/
         │   └── FavoritosContext.js     [A] ✅  lista global de favoritos (useContext)
+        ├── theme/
+        │   └── cores.js                [B] ✅  paleta de cores do app
         └── utils/
             └── ingredientes.js         [A] ✅  junta strIngredientN + strMeasureN
 ```
@@ -219,25 +222,26 @@ npx expo install @react-navigation/native @react-navigation/native-stack react-n
 
 ### 🟨 Fase 3 — Favoritos e acabamento (Pessoa B)
 
-**B0. Ambiente**
+✅ **B0. Ambiente**
 - Node.js versão LTS (`node -v` no terminal) e Git
 - App **Expo Go** no celular, com celular e computador na **mesma rede Wi-Fi**
 - Clonar e rodar o projeto (seção 6)
 
-**B1. Botão favoritar** (na tela de Detalhes)
+✅ **B1. Botão favoritar** (na tela de Detalhes) (PR #10)
 - Alterna entre adicionar e remover usando `ehFavorito`, `adicionarFavorito` e `removerFavorito` do contexto
 - ✅ **Pronto quando:** o botão muda de "❤ Favoritar" para "Remover dos favoritos" e volta
 
-**B2. Tela de favoritos**
+✅ **B2. Tela de favoritos** (PR #11)
 - `FlatList` com `ReceitaCard` (passando `onRemover`), toque abre Detalhes, mensagem quando vazia
 - ✅ **Pronto quando:** favoritar em Detalhes faz a receita aparecer em Favoritos; remover em Favoritos faz o ❤ de Detalhes mudar também (prova de que a lista é global)
 
-**B3. Identidade visual**
+✅ **B3. Identidade visual** (PR #12)
 - Uma paleta de cores só (hoje o laranja `#E85D04` está nos componentes), aplicada em todas as telas
 - Títulos dos cabeçalhos em português, teclado fecha ao buscar
 
-**B4. Revisar mensagens**
+✅ **B4. Revisar mensagens** (PR #15)
 - Conferir todas as mensagens de erro, de carregamento e de lista vazia do app
+- Resultado: todas em português e no mesmo tom, e todo erro de internet tem "Tentar novamente". Ajustes: ponto final no título de lista vazia dos Resultados, "Receita não encontrada" agora diz para voltar e escolher outra, e o texto de carregamento ficou centralizado
 
 ---
 
@@ -257,12 +261,12 @@ npx expo install @react-navigation/native @react-navigation/native-stack react-n
 |---|---|---|
 | React Native com Expo | Projeto criado com `create-expo-app` | A ✅ |
 | Consome API externa | `src/services/api.js` (TheMealDB) | A ✅ |
-| `useState` para os estados | Todas as telas (`termo`, `receitas`, `carregando`, `erro`, `receita`) | A ✅ e B |
-| `useContext` para favoritos | `src/context/FavoritosContext.js` (A), usado no botão ❤ e na tela de Favoritos (B) | A ✅ e B |
+| `useState` para os estados | Todas as telas (`termo`, `receitas`, `carregando`, `erro`, `receita`) | A ✅ e B ✅ |
+| `useContext` para favoritos | `src/context/FavoritosContext.js` (A), usado no botão ❤ e na tela de Favoritos (B) | A ✅ e B ✅ |
 | Tela inicial com pesquisa | `HomeScreen.js` | A ✅ |
 | Tela de resultados | `ResultadosScreen.js` | A ✅ |
 | Tela de detalhes | `DetalhesScreen.js` | A ✅ |
-| Tela de favoritos | `FavoritosScreen.js` | B |
+| Tela de favoritos | `FavoritosScreen.js` | B ✅ |
 | Navegação entre telas | `App.js` (React Navigation) | A ✅ |
 | Carregamento e erros | `Carregando.js` e `MensagemErro.js`, usados em Resultados e Detalhes | A ✅ |
 
