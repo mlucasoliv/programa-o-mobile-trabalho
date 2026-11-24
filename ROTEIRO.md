@@ -243,10 +243,10 @@ npx expo install @react-navigation/native @react-navigation/native-stack react-n
 
 ### 🟥 Fase 4 — Entrega (Pessoa B; apresentação com os dois)
 
-- [ ] **B5. Testes finais:** o app inteiro no celular (de preferência um Android e um iPhone), incluindo o modo avião em Resultados e em Detalhes
-- [ ] **B6. README.md:** sobre o app, API usada, como rodar e prints das telas
-- [ ] **B7. Vídeo ou prints** do app funcionando
-- [ ] **B8. Conferir o checklist** da seção 8
+- [x] **B5. Testes finais:** o app inteiro no celular (de preferência um Android e um iPhone), incluindo o modo avião em Resultados e em Detalhes (testado no Android com o Expo Go)
+- [x] **B6. README.md:** sobre o app, API usada, como rodar e prints das telas
+- [x] **B7. Vídeo ou prints** do app funcionando
+- [x] **B8. Conferir o checklist** da seção 8
 - [ ] **Os dois: ensaiar a apresentação.** Cada um explica a sua parte, mas os dois precisam saber responder sobre tudo
 
 ---
