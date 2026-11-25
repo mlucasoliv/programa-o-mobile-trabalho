@@ -1,9 +1,13 @@
+import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 
-import { FavoritosProvider } from "./src/context/FavoritosContext";
+import {
+  FavoritosProvider,
+  useFavoritos,
+} from "./src/context/FavoritosContext";
 import DetalhesScreen from "./src/screens/DetalhesScreen";
 import FavoritosScreen from "./src/screens/FavoritosScreen";
 import HomeScreen from "./src/screens/HomeScreen";
@@ -13,6 +17,29 @@ import { cores } from "./src/theme/cores";
 // Stack = "pilha" de telas: cada navigate() coloca uma tela por cima,
 // e o botão voltar tira a de cima, mostrando a anterior.
 const Stack = createNativeStackNavigator();
+
+// Botão do cabeçalho: só um coração. Ele lê a lista global (useContext):
+// fica cheio quando já existe alguma favorita e vazado quando a lista está vazia.
+function BotaoFavoritos({ onPress }) {
+  const { favoritos } = useFavoritos();
+  const temFavoritos = favoritos.length > 0;
+
+  return (
+    <Pressable
+      onPress={onPress}
+      hitSlop={10}
+      accessibilityRole="button"
+      accessibilityLabel={`Abrir favoritos (${favoritos.length})`}
+      style={({ pressed }) => (pressed ? styles.pressionado : null)}
+    >
+      <Ionicons
+        name={temFavoritos ? "heart" : "heart-outline"}
+        size={26}
+        color={cores.primaria}
+      />
+    </Pressable>
+  );
+}
 
 export default function App() {
   return (
@@ -24,20 +51,14 @@ export default function App() {
         <StatusBar style="dark" />
         <Stack.Navigator
           initialRouteName="Inicio"
-          // screenOptions vale para TODAS as telas. Aqui ele coloca o botão
-          // "❤ Favoritos" no canto direito do cabeçalho.
+          // screenOptions vale para TODAS as telas. Aqui ele coloca o coração
+          // dos favoritos no canto direito do cabeçalho.
           screenOptions={({ navigation }) => ({
             headerTintColor: cores.primaria,
-            headerTitleStyle: { color: cores.textoPrincipal },
+            headerTitleStyle: { color: cores.textoPrincipal, fontWeight: "700" },
+            headerShadowVisible: false, // cabeçalho sem a sombra embaixo, mais limpo
             headerRight: () => (
-              <Pressable
-                onPress={() => navigation.navigate("Favoritos")}
-                hitSlop={8}
-                accessibilityRole="button"
-                accessibilityLabel="Abrir favoritos"
-              >
-                <Text style={styles.botaoFavoritos}>❤ Favoritos</Text>
-              </Pressable>
+              <BotaoFavoritos onPress={() => navigation.navigate("Favoritos")} />
             ),
           })}
         >
@@ -45,7 +66,15 @@ export default function App() {
           <Stack.Screen
             name="Inicio"
             component={HomeScreen}
-            options={{ title: "FoodUMJ" }}
+            options={{
+              title: "FoodUMJ",
+              // Na tela inicial o nome do app aparece em laranja, como uma marca
+              headerTitleStyle: {
+                color: cores.primaria,
+                fontWeight: "800",
+                fontSize: 22,
+              },
+            }}
           />
           <Stack.Screen
             name="Resultados"
@@ -73,9 +102,7 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  botaoFavoritos: {
-    color: cores.primaria,
-    fontSize: 16,
-    fontWeight: "600",
+  pressionado: {
+    opacity: 0.6,
   },
 });

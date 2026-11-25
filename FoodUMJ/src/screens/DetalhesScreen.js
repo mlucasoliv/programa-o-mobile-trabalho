@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import {
   Image,
@@ -102,16 +103,32 @@ export default function DetalhesScreen({ route }) {
         accessibilityLabel={`Foto de ${receita.strMeal}`}
       />
 
+      {/* O corpo sobe um pouco por cima da foto (marginTop negativo) e tem os cantos
+          de cima arredondados, como uma folha branca apoiada na imagem */}
       <View style={styles.corpo}>
         <Text style={styles.nome}>{receita.strMeal}</Text>
 
         {/* Categoria e origem só aparecem se a API mandar */}
         <View style={styles.etiquetas}>
           {receita.strCategory ? (
-            <Text style={styles.etiqueta}>🍽 {receita.strCategory}</Text>
+            <View style={styles.etiqueta}>
+              <Ionicons
+                name="restaurant-outline"
+                size={14}
+                color={cores.primariaEscura}
+              />
+              <Text style={styles.textoEtiqueta}>{receita.strCategory}</Text>
+            </View>
           ) : null}
           {receita.strArea ? (
-            <Text style={styles.etiqueta}>🌍 {receita.strArea}</Text>
+            <View style={styles.etiqueta}>
+              <Ionicons
+                name="earth-outline"
+                size={14}
+                color={cores.primariaEscura}
+              />
+              <Text style={styles.textoEtiqueta}>{receita.strArea}</Text>
+            </View>
           ) : null}
         </View>
 
@@ -128,18 +145,25 @@ export default function DetalhesScreen({ route }) {
             pressed && styles.botaoFavoritoPressionado,
           ]}
         >
+          {/* Coração cheio = já é favorita; coração vazado = ainda não é */}
+          <Ionicons
+            name={favorita ? "heart" : "heart-outline"}
+            size={20}
+            color={favorita ? cores.primaria : cores.textoSobrePrimaria}
+          />
           <Text
             style={[
               styles.textoFavorito,
               favorita && styles.textoFavoritoAtivo,
             ]}
           >
-            {favorita ? "Remover dos favoritos" : "❤ Favoritar"}
+            {favorita ? "Remover dos favoritos" : "Favoritar"}
           </Text>
         </Pressable>
 
         <Text style={styles.tituloSecao}>
-          Ingredientes ({ingredientes.length})
+          Ingredientes{" "}
+          <Text style={styles.contador}>({ingredientes.length})</Text>
         </Text>
         <View style={styles.caixa}>
           {ingredientes.map((item, indice) => (
@@ -183,7 +207,12 @@ const styles = StyleSheet.create({
     backgroundColor: cores.fundoImagem, // aparece enquanto a foto carrega
   },
   corpo: {
+    marginTop: -24, // sobe 24 pixels por cima da foto
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    backgroundColor: cores.fundo,
     padding: 20,
+    paddingTop: 24,
   },
   nome: {
     fontSize: 24,
@@ -197,20 +226,27 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   etiqueta: {
+    flexDirection: "row", // ícone e texto lado a lado
+    alignItems: "center",
+    gap: 6,
     paddingVertical: 5,
     paddingHorizontal: 12,
     borderRadius: 14,
-    overflow: "hidden", // necessário para o borderRadius do Text funcionar no iPhone
     backgroundColor: cores.primariaClara,
+  },
+  textoEtiqueta: {
     color: cores.primariaEscura,
     fontSize: 14,
     fontWeight: "600",
   },
   botaoFavorito: {
     marginTop: 18,
-    paddingVertical: 12,
-    borderRadius: 10,
+    paddingVertical: 13,
+    borderRadius: 12,
+    flexDirection: "row", // coração e texto lado a lado
     alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
     backgroundColor: cores.primaria,
     borderWidth: 1,
     borderColor: cores.primaria,
@@ -235,6 +271,10 @@ const styles = StyleSheet.create({
     fontSize: 19,
     fontWeight: "700",
     color: cores.textoPrincipal,
+  },
+  contador: {
+    fontWeight: "400",
+    color: cores.textoSuave,
   },
   caixa: {
     borderRadius: 12,

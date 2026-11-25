@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { cores } from "../theme/cores";
 
@@ -7,7 +8,8 @@ import { cores } from "../theme/cores";
 // Props:
 //   receita    → objeto da API (usa idMeal, strMeal, strMealThumb e strCategory)
 //   onPress    → função chamada ao tocar no card (ex.: abrir os Detalhes)
-//   onRemover  → opcional: se for passada, aparece o botão "Remover" (usado em Favoritos)
+//   onRemover  → opcional: se for passada, aparece o botão de lixeira (usado em Favoritos);
+//                se não for, aparece uma setinha indicando que o card abre outra tela
 //
 // Uso: <ReceitaCard receita={receita} onPress={() => abrir(receita)} onRemover={() => remover(receita.idMeal)} />
 export default function ReceitaCard({ receita, onPress, onRemover }) {
@@ -33,7 +35,7 @@ export default function ReceitaCard({ receita, onPress, onRemover }) {
         ) : null}
       </View>
 
-      {onRemover && (
+      {onRemover ? (
         <Pressable
           onPress={onRemover}
           accessibilityRole="button"
@@ -44,8 +46,15 @@ export default function ReceitaCard({ receita, onPress, onRemover }) {
             pressed && styles.botaoRemoverPressionado,
           ]}
         >
-          <Text style={styles.textoRemover}>Remover</Text>
+          <Ionicons name="trash-outline" size={20} color={cores.primaria} />
         </Pressable>
+      ) : (
+        <Ionicons
+          name="chevron-forward"
+          size={20}
+          color={cores.textoPlaceholder}
+          style={styles.seta}
+        />
       )}
     </Pressable>
   );
@@ -56,8 +65,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: cores.fundo,
-    borderRadius: 12,
-    padding: 10,
+    borderRadius: 14,
+    padding: 12,
     marginHorizontal: 16,
     marginVertical: 6,
     // sombra no iPhone
@@ -72,14 +81,14 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   imagem: {
-    width: 80,
-    height: 80,
-    borderRadius: 8,
+    width: 76,
+    height: 76,
+    borderRadius: 10,
     backgroundColor: cores.fundoImagem, // aparece enquanto a foto carrega
   },
   textos: {
     flex: 1,
-    marginLeft: 12,
+    marginLeft: 14,
   },
   nome: {
     fontSize: 16,
@@ -87,24 +96,30 @@ const styles = StyleSheet.create({
     color: cores.textoPrincipal,
   },
   categoria: {
-    marginTop: 4,
-    fontSize: 14,
-    color: cores.textoSuave,
+    alignSelf: "flex-start", // a etiqueta fica do tamanho do texto, não da linha inteira
+    marginTop: 6,
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    overflow: "hidden", // necessário para o borderRadius do Text funcionar no iPhone
+    backgroundColor: cores.primariaClara,
+    color: cores.primariaEscura,
+    fontSize: 12,
+    fontWeight: "600",
+  },
+  seta: {
+    marginLeft: 8,
   },
   botaoRemover: {
     marginLeft: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: cores.primaria,
-  },
-  botaoRemoverPressionado: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: cores.primariaClara,
   },
-  textoRemover: {
-    color: cores.primaria,
-    fontSize: 14,
-    fontWeight: "600",
+  botaoRemoverPressionado: {
+    opacity: 0.6,
   },
 });

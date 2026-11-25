@@ -1,3 +1,4 @@
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import {
   Keyboard,
@@ -8,16 +9,18 @@ import {
   TextInput,
   View,
 } from "react-native";
+import IconeCirculo from "../components/IconeCirculo";
 import { cores } from "../theme/cores";
 
 // As receitas da API estão em inglês, então sugerimos termos que trazem bastante resultado.
+// "icone" é o nome do desenho no MaterialCommunityIcons (lista em https://icons.expo.fyi).
 const SUGESTOES = [
-  { termo: "chicken", traducao: "frango" },
-  { termo: "beef", traducao: "carne" },
-  { termo: "cake", traducao: "bolo" },
-  { termo: "soup", traducao: "sopa" },
-  { termo: "salad", traducao: "salada" },
-  { termo: "rice", traducao: "arroz" },
+  { termo: "chicken", traducao: "frango", icone: "food-drumstick-outline" },
+  { termo: "beef", traducao: "carne", icone: "food-steak" },
+  { termo: "cake", traducao: "bolo", icone: "cake-variant-outline" },
+  { termo: "soup", traducao: "sopa", icone: "pot-steam-outline" },
+  { termo: "salad", traducao: "salada", icone: "leaf" },
+  { termo: "rice", traducao: "arroz", icone: "rice" },
 ];
 
 // Tela inicial: campo de pesquisa + sugestões.
@@ -55,35 +58,42 @@ export default function HomeScreen({ navigation }) {
     // keyboardShouldPersistTaps="handled": o toque numa sugestão funciona de primeira,
     // mesmo com o teclado aberto
     <ScrollView
+      style={styles.tela}
       contentContainerStyle={styles.container}
       keyboardShouldPersistTaps="handled"
     >
-      <Text style={styles.emoji}>🍲</Text>
-      <Text style={styles.titulo}>O que vamos cozinhar hoje?</Text>
-      <Text style={styles.subtitulo}>
-        Pesquise uma receita pelo nome, em inglês.
-      </Text>
+      <View style={styles.topo}>
+        <IconeCirculo nome="restaurant" tamanho={80} />
+        <Text style={styles.titulo}>O que vamos cozinhar hoje?</Text>
+        <Text style={styles.subtitulo}>
+          Pesquise uma receita pelo nome, em inglês.
+        </Text>
+      </View>
 
       <View style={styles.linhaBusca}>
-        <TextInput
-          style={[styles.campo, aviso ? styles.campoComAviso : null]}
-          value={termo}
-          onChangeText={aoDigitar}
-          onSubmitEditing={() => buscar(termo)} // o Enter do teclado também busca
-          placeholder="Ex.: chicken, cake, soup..."
-          placeholderTextColor={cores.textoPlaceholder}
-          returnKeyType="search"
-          autoCapitalize="none"
-          autoCorrect={false} // senão o corretor em português troca "chicken" por outra palavra
-          clearButtonMode="while-editing"
-          accessibilityLabel="Pesquisar receitas"
-        />
+        {/* A lupa e o campo ficam dentro da mesma "caixa", que recebe a borda */}
+        <View style={[styles.caixaBusca, aviso ? styles.caixaComAviso : null]}>
+          <Ionicons name="search" size={20} color={cores.textoPlaceholder} />
+          <TextInput
+            style={styles.campo}
+            value={termo}
+            onChangeText={aoDigitar}
+            onSubmitEditing={() => buscar(termo)} // o Enter do teclado também busca
+            placeholder="Ex.: chicken, cake, soup..."
+            placeholderTextColor={cores.textoPlaceholder}
+            returnKeyType="search"
+            autoCapitalize="none"
+            autoCorrect={false} // senão o corretor em português troca "chicken" por outra palavra
+            clearButtonMode="while-editing"
+            accessibilityLabel="Pesquisar receitas"
+          />
+        </View>
         <Pressable
           onPress={() => buscar(termo)}
           accessibilityRole="button"
           style={({ pressed }) => [
             styles.botao,
-            pressed && styles.botaoPressionado,
+            pressed && styles.pressionado,
           ]}
         >
           <Text style={styles.textoBotao}>Buscar</Text>
@@ -93,6 +103,7 @@ export default function HomeScreen({ navigation }) {
       {aviso ? <Text style={styles.aviso}>{aviso}</Text> : null}
 
       <Text style={styles.tituloSugestoes}>Sugestões</Text>
+      {/* Grade de duas colunas: cada cartão ocupa metade da linha (veja "cartao" nos estilos) */}
       <View style={styles.sugestoes}>
         {SUGESTOES.map((sugestao) => (
           <Pressable
@@ -101,14 +112,21 @@ export default function HomeScreen({ navigation }) {
             accessibilityRole="button"
             accessibilityLabel={`Buscar ${sugestao.termo}, ${sugestao.traducao}`}
             style={({ pressed }) => [
-              styles.chip,
-              pressed && styles.chipPressionado,
+              styles.cartao,
+              pressed && styles.pressionado,
             ]}
           >
-            <Text style={styles.textoChip}>
-              {sugestao.termo}{" "}
-              <Text style={styles.traducaoChip}>({sugestao.traducao})</Text>
-            </Text>
+            <View style={styles.iconeCartao}>
+              <MaterialCommunityIcons
+                name={sugestao.icone}
+                size={22}
+                color={cores.primaria}
+              />
+            </View>
+            <View style={styles.textosCartao}>
+              <Text style={styles.termoCartao}>{sugestao.termo}</Text>
+              <Text style={styles.traducaoCartao}>{sugestao.traducao}</Text>
+            </View>
           </Pressable>
         ))}
       </View>
@@ -117,18 +135,21 @@ export default function HomeScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  tela: {
+    flex: 1,
+    backgroundColor: cores.fundoSuave, // cinza claro: o campo e os cartões brancos se destacam
+  },
   container: {
     flexGrow: 1,
-    padding: 24,
-    paddingTop: 40,
-    backgroundColor: cores.fundo,
+    padding: 20,
+    paddingTop: 32,
+    paddingBottom: 32,
   },
-  emoji: {
-    fontSize: 56,
-    textAlign: "center",
+  topo: {
+    alignItems: "center",
   },
   titulo: {
-    marginTop: 12,
+    marginTop: 16,
     fontSize: 24,
     fontWeight: "700",
     color: cores.textoPrincipal,
@@ -145,28 +166,35 @@ const styles = StyleSheet.create({
     marginTop: 28,
     gap: 8,
   },
-  campo: {
+  caixaBusca: {
     flex: 1,
-    height: 48,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    height: 50,
     paddingHorizontal: 14,
     borderWidth: 1,
     borderColor: cores.borda,
-    borderRadius: 10,
-    fontSize: 16, // 16 ou mais evita zoom automático em alguns aparelhos
-    color: cores.textoPrincipal,
-    backgroundColor: cores.fundoCampo,
+    borderRadius: 12,
+    backgroundColor: cores.fundo,
   },
-  campoComAviso: {
+  caixaComAviso: {
     borderColor: cores.erro,
   },
+  campo: {
+    flex: 1,
+    height: "100%",
+    fontSize: 16, // 16 ou mais evita zoom automático em alguns aparelhos
+    color: cores.textoPrincipal,
+  },
   botao: {
-    height: 48,
+    height: 50,
     paddingHorizontal: 18,
-    borderRadius: 10,
+    borderRadius: 12,
     justifyContent: "center",
     backgroundColor: cores.primaria,
   },
-  botaoPressionado: {
+  pressionado: {
     opacity: 0.7,
   },
   textoBotao: {
@@ -181,32 +209,53 @@ const styles = StyleSheet.create({
   },
   tituloSugestoes: {
     marginTop: 32,
-    marginBottom: 10,
-    fontSize: 15,
-    fontWeight: "600",
-    color: cores.texto,
+    marginBottom: 12,
+    fontSize: 17,
+    fontWeight: "700",
+    color: cores.textoPrincipal,
   },
   sugestoes: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 8,
+    gap: 12,
   },
-  chip: {
-    paddingVertical: 10,
-    paddingHorizontal: 14,
+  cartao: {
+    // flexBasis 40% + flexGrow 1: cabem só dois por linha e os dois crescem igual
+    flexBasis: "40%",
+    flexGrow: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    padding: 12,
+    borderRadius: 14,
+    backgroundColor: cores.fundo,
+    // mesma sombra dos cards de receita
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
+  },
+  iconeCartao: {
+    width: 40,
+    height: 40,
     borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: cores.primariaClara,
   },
-  chipPressionado: {
-    opacity: 0.6,
+  textosCartao: {
+    flex: 1,
   },
-  textoChip: {
+  termoCartao: {
     fontSize: 15,
-    fontWeight: "600",
-    color: cores.primariaEscura,
+    fontWeight: "700",
+    color: cores.textoPrincipal,
+    textTransform: "capitalize", // mostra "Chicken", mas a busca continua com "chicken"
   },
-  traducaoChip: {
-    fontWeight: "400",
-    color: cores.primariaSuave,
+  traducaoCartao: {
+    marginTop: 1,
+    fontSize: 13,
+    color: cores.textoSuave,
   },
 });

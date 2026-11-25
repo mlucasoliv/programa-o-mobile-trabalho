@@ -1,10 +1,11 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
+import IconeCirculo from "../components/IconeCirculo";
 import ReceitaCard from "../components/ReceitaCard";
 import { useFavoritos } from "../context/FavoritosContext";
 import { cores } from "../theme/cores";
 
 // Tela de favoritos: mostra a lista global de receitas favoritadas (FavoritosContext).
-// Tocar no card abre os Detalhes; o botão "Remover" tira a receita da lista.
+// Tocar no card abre os Detalhes; o botão da lixeira tira a receita da lista.
 export default function FavoritosScreen({ navigation }) {
   const { favoritos, removerFavorito } = useFavoritos();
 
@@ -12,7 +13,7 @@ export default function FavoritosScreen({ navigation }) {
   if (favoritos.length === 0) {
     return (
       <View style={styles.vazio}>
-        <Text style={styles.icone}>❤</Text>
+        <IconeCirculo nome="heart-outline" />
         <Text style={styles.textoVazio}>
           Você ainda não tem receitas favoritas.
         </Text>
@@ -55,12 +56,8 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: cores.fundoSuave,
   },
-  icone: {
-    fontSize: 48,
-    color: cores.primaria,
-    marginBottom: 12,
-  },
   textoVazio: {
+    marginTop: 16,
     fontSize: 18,
     fontWeight: "600",
     color: cores.textoPrincipal,
