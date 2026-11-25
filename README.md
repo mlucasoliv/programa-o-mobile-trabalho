@@ -82,17 +82,21 @@ Escaneie o QR code com o Expo Go (no Android, pelo próprio app; no iPhone, pela
 programa-o-mobile-trabalho/
 ├── ROTEIRO.md
 ├── README.md
+├── prints/                         telas do app usadas abaixo
 └── FoodUMJ/
-    ├── App.js                      navegação e Provider dos favoritos
+    ├── App.js                      navegação, Provider e coração dos favoritos
     └── src/
         ├── services/api.js         chamadas à TheMealDB
-        ├── components/             Carregando, MensagemErro, ReceitaCard
+        ├── components/             Carregando, MensagemErro, ReceitaCard, IconeCirculo
         ├── screens/                Home, Resultados, Detalhes, Favoritos
         ├── context/                FavoritosContext
+        ├── theme/cores.js          paleta de cores do app
         └── utils/ingredientes.js   junta ingredientes e medidas
 ```
 
 ## Prints
+
+Tirados no simulador de iPhone, pelo Expo Go.
 
 | Início | Resultados | Detalhes |
 |---|---|---|
