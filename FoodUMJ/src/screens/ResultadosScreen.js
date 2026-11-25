@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import Carregando from "../components/Carregando";
+import IconeCirculo from "../components/IconeCirculo";
 import MensagemErro from "../components/MensagemErro";
 import ReceitaCard from "../components/ReceitaCard";
 import { buscarReceitas } from "../services/api";
@@ -61,7 +62,7 @@ export default function ResultadosScreen({ navigation, route }) {
   if (receitas.length === 0) {
     return (
       <View style={styles.vazio}>
-        <Text style={styles.vazioIcone}>🔍</Text>
+        <IconeCirculo nome="search-outline" />
         <Text style={styles.vazioTitulo}>
           Nenhuma receita encontrada para "{termo}".
         </Text>
@@ -126,12 +127,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 24,
-  },
-  vazioIcone: {
-    fontSize: 48,
+    backgroundColor: cores.fundoSuave,
   },
   vazioTitulo: {
-    marginTop: 12,
+    marginTop: 16,
     fontSize: 17,
     fontWeight: "600",
     color: cores.textoPrincipal,
@@ -146,7 +145,7 @@ const styles = StyleSheet.create({
   botao: {
     marginTop: 20,
     paddingVertical: 12,
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
     borderRadius: 10,
     backgroundColor: cores.primaria,
   },

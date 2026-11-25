@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { cores } from "../theme/cores";
+import IconeCirculo from "./IconeCirculo";
 
 // Mostra uma mensagem de erro e, se receber a função onTentarNovamente,
 // um botão para o usuário repetir a requisição.
@@ -10,7 +11,7 @@ export default function MensagemErro({
 }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.icone}>😕</Text>
+      <IconeCirculo nome="alert-circle-outline" />
       <Text style={styles.texto}>{mensagem}</Text>
 
       {onTentarNovamente && (
@@ -36,21 +37,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 24,
   },
-  icone: {
-    fontSize: 48,
-    marginBottom: 12,
-  },
   texto: {
+    marginTop: 16,
     fontSize: 16,
     color: cores.texto,
     textAlign: "center",
-    marginBottom: 20,
   },
   botao: {
+    marginTop: 20,
     backgroundColor: cores.primaria,
     paddingVertical: 12,
     paddingHorizontal: 24,
-    borderRadius: 8,
+    borderRadius: 10,
   },
   botaoPressionado: {
     opacity: 0.7,
