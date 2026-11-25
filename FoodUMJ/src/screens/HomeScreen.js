@@ -23,6 +23,13 @@ const SUGESTOES = [
   { termo: "rice", traducao: "arroz", icone: "rice" },
 ];
 
+// Agrupa as sugestões de duas em duas: cada par vira uma linha da grade.
+// [a, b, c, d, e, f]  →  [[a, b], [c, d], [e, f]]
+const LINHAS_SUGESTOES = [];
+for (let i = 0; i < SUGESTOES.length; i += 2) {
+  LINHAS_SUGESTOES.push(SUGESTOES.slice(i, i + 2));
+}
+
 // Tela inicial: campo de pesquisa + sugestões.
 export default function HomeScreen({ navigation }) {
   // useState guarda o que está digitado. Cada letra digitada atualiza o estado,
@@ -103,31 +110,38 @@ export default function HomeScreen({ navigation }) {
       {aviso ? <Text style={styles.aviso}>{aviso}</Text> : null}
 
       <Text style={styles.tituloSugestoes}>Sugestões</Text>
-      {/* Grade de duas colunas: cada cartão ocupa metade da linha (veja "cartao" nos estilos) */}
-      <View style={styles.sugestoes}>
-        {SUGESTOES.map((sugestao) => (
-          <Pressable
-            key={sugestao.termo}
-            onPress={() => usarSugestao(sugestao.termo)}
-            accessibilityRole="button"
-            accessibilityLabel={`Buscar ${sugestao.termo}, ${sugestao.traducao}`}
-            style={({ pressed }) => [
-              styles.cartao,
-              pressed && styles.pressionado,
-            ]}
-          >
-            <View style={styles.iconeCartao}>
-              <MaterialCommunityIcons
-                name={sugestao.icone}
-                size={22}
-                color={cores.primaria}
-              />
-            </View>
-            <View style={styles.textosCartao}>
-              <Text style={styles.termoCartao}>{sugestao.termo}</Text>
-              <Text style={styles.traducaoCartao}>{sugestao.traducao}</Text>
-            </View>
-          </Pressable>
+      {/* Grade de duas colunas: cada linha tem dois cartões com flex: 1,
+          então os dois dividem a largura igualmente */}
+      <View style={styles.grade}>
+        {LINHAS_SUGESTOES.map((linha) => (
+          <View key={linha[0].termo} style={styles.linhaGrade}>
+            {linha.map((sugestao) => (
+              <Pressable
+                key={sugestao.termo}
+                onPress={() => usarSugestao(sugestao.termo)}
+                accessibilityRole="button"
+                accessibilityLabel={`Buscar ${sugestao.termo}, ${sugestao.traducao}`}
+                style={({ pressed }) => [
+                  styles.cartao,
+                  pressed && styles.pressionado,
+                ]}
+              >
+                <View style={styles.iconeCartao}>
+                  <MaterialCommunityIcons
+                    name={sugestao.icone}
+                    size={22}
+                    color={cores.primaria}
+                  />
+                </View>
+                <View style={styles.textosCartao}>
+                  <Text style={styles.termoCartao}>{sugestao.termo}</Text>
+                  <Text style={styles.traducaoCartao}>
+                    {sugestao.traducao}
+                  </Text>
+                </View>
+              </Pressable>
+            ))}
+          </View>
         ))}
       </View>
     </ScrollView>
@@ -214,15 +228,15 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: cores.textoPrincipal,
   },
-  sugestoes: {
+  grade: {
+    gap: 12, // espaço entre as linhas
+  },
+  linhaGrade: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 12,
+    gap: 12, // espaço entre os dois cartões da linha
   },
   cartao: {
-    // flexBasis 40% + flexGrow 1: cabem só dois por linha e os dois crescem igual
-    flexBasis: "40%",
-    flexGrow: 1,
+    flex: 1, // os dois cartões da linha dividem a largura igualmente
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
